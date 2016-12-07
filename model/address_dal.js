@@ -5,7 +5,7 @@ var db  = require('./db_connection.js');
 var connection = mysql.createConnection(db.config);
 
 exports.getAll = function(callback) {
-    var query = 'SELECT * FROM address;';
+    var query = 'SELECT * FROM address_view;';
 
     connection.query(query, function(err, result) {
         callback(err, result);
@@ -19,4 +19,27 @@ exports.getById = function(address_id, callback) {
     connection.query(query, queryData, function(err, result) {
         callback(err, result);
     });
+};
+
+exports.insert = function(params, callback) {
+    var query = 'INSERT INTO address (address_name, address_id) VALUES (?, ?)';
+
+    // the question marks in the sql query above will be replaced by the values of the
+    // the data in queryData
+    var queryData = [params.school_name, params.address_id];
+
+    connection.query(query, queryData, function(err, result) {
+        callback(err, result);
+    });
+
+}
+
+exports.delete = function(address_id, callback) {
+    var query = 'DELETE FROM address WHERE address_id = ?';
+    var queryData = [address_id];
+
+    connection.query(query, queryData, function(err, result) {
+        callback(err, result);
+    });
+
 };
